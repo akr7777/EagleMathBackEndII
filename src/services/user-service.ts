@@ -127,7 +127,7 @@ class UserService {
         const fileName = 'avatar_' + id + '.';
         let avaFile =  folderPath + 'abstractAvatar.jpeg';
 
-        const fs = require('fs');
+        //const fs = require('fs');
         //console.log('TYPES=', process.env.IMAGE_EXTS, typeof process.env.IMAGE_EXTS);
         if (process.env.IMAGE_EXTS) {
             process.env.IMAGE_EXTS.split('/').forEach(ext => {

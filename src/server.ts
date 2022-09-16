@@ -9,7 +9,8 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 export const {Schema, model} = require('mongoose');
 const mongoose = require('mongoose');
-const routerAuth = require('./router/index');
+const routerAuth = require('./router/auth-router');
+const routerContent = require('./router/content-router');
 const errorMiddleware = require('./middleware/error-middleware');
 
 if (process.env.NODE_ENV !== "production") {
@@ -32,6 +33,7 @@ app.use(errorMiddleware);
 
 //ROUTES
 app.use('/auth', routerAuth);
+app.use('/content', routerContent);
 
 const start = async () => {
 
