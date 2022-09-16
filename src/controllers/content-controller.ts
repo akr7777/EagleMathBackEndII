@@ -9,6 +9,16 @@ class ContentController {
         res.json(categories);
     }
 
+    async getAllMaterials(req: Request, res: Response, next: NextFunction) {
+        const materials = await contentService.getAllMaterials();
+        res.json(materials);
+    }
+
+    async getAllTasks(req: Request, res: Response, next: NextFunction) {
+        const tasks = await contentService.getAllTasks();
+        res.json(tasks);
+    }
+
 }
 
 module.exports = new ContentController();
