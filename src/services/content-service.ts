@@ -1,9 +1,11 @@
 import {MaterialsType} from "../models/material-model";
 import {TaskType} from "../models/taskModel";
+//import {FavoriteContentModelType} from "../models/favorite-content-model";
 
 const categoryModel = require('../models/categories-model');
 const materialModel = require('../models/material-model');
 const taskModel = require('../models/taskModel');
+const favoriteContentModel = require('../models/favorite-content-model');
 
 class ContentService {
     async getAllCategories() {
@@ -50,6 +52,24 @@ class ContentService {
         //console.log('ContentService / getAllTasks / result= ', result)
         return result;
     }
+
+    async getFavoriteContent(userId: string) {
+        const result = await favoriteContentModel.findOne({userId: userId});
+        return result.favorites;
+    }
+    async addContentToFavorites(userId: string, contentId: string) {
+        const f = await favoriteContentModel.findOne({userId: userId});
+        f.favorites.push(contentId);
+        f.save();
+        return f.favorites;
+    }
+    async deleteContentFromFavorites(userId: string, contentId: string) {
+        const f = await favoriteContentModel.findOne({userId: userId});
+        f.favorites = f.favorites.filter( (cid:string) => cid !== contentId);
+        f.save();
+        return f.favorites;
+    }
+
 }
 
 module.exports = new ContentService();
