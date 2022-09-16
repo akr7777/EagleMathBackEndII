@@ -11,11 +11,11 @@ class UserController {
             if (!errors.isEmpty()) {
                 return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
             }
-            const {email, password} = req.body;
+            const {name, email, password} = req.body;
 
             console.log('email, pass=', email, password);
 
-            const userData = await userService.registration(email, password);
+            const userData = await userService.registration(name, email, password);
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
 
             res.json(userData);
@@ -84,6 +84,24 @@ class UserController {
             next(e);
         }
     }
+
+    async getAvatar(req:Request, res:Response, next:NextFunction) {
+        console.log('UserController / getAvatar')
+        try {
+            const {id} = req.query;
+            const avatarFile = await userService.getAvatarFile(id);
+
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "image/jpeg");
+            require("fs").readFile(avatarFile, (err:any, image:any) => {
+                res.end(image);
+            });
+        }
+         catch (e) {
+             next(e);
+        }
+    }
+
 }
 
 module.exports = new UserController();

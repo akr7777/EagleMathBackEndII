@@ -6,12 +6,13 @@ if (process.env.NODE_ENV !== "production") {
 
 async function test2(email: string, activationLink: string) {
     const transporter = nodemailer.createTransport({
-        service: 'yandex',
+        service: process.env.TEST_SMTP_SERVICE,
         auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASSWORD,
+            user: process.env.TEST_SMTP_USER,
+            pass: process.env.TEST_SMTP_PASSWORD,
         },
     });
+
 
     console.log('_____________\nVERIFYING....')
     await transporter.verify(function (error: any, success: any) {
@@ -27,7 +28,7 @@ async function test2(email: string, activationLink: string) {
     console.log('_____________\nTRY TO SEND EMAIL....')
 
     await transporter.sendMail({
-        from: process.env.SMTP_USER,
+        from: process.env.TEST_SMTP_USER,
         to: email,
         subject: `Активация аккаунта на сайте ${process.env.API_URL}`,
         text: '',
@@ -41,4 +42,4 @@ async function test2(email: string, activationLink: string) {
     });
 }
 
-test2('akrov77@gmail.com', 'dsf');
+test2('akrov77@gmail.com', 'Send mail TEST');
