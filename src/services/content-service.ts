@@ -55,7 +55,10 @@ class ContentService {
 
     async getFavoriteContent(userId: string) {
         const result = await favoriteContentModel.findOne({userId: userId});
-        return result.favorites;
+        if (result)
+            return result.favorites;
+        else
+            return []
     }
     async addContentToFavorites(userId: string, contentId: string) {
         const f = await favoriteContentModel.findOne({userId: userId});
