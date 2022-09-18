@@ -20,6 +20,9 @@ enum ResultCodesEnum {
     //пользователь уже существует
     userAlreadyExists = 16,
 
+    //Старый пароль введен неверно при попытке смены пароля
+    oldUserPassIsIncorrect = 17,
+
     Error = 1,
 }
 

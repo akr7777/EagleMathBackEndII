@@ -138,6 +138,33 @@ class UserService {
         }
         return avaFile;
     }
+
+    async updatePassword(id: string, newPass: string, oldPass: string) {
+        try {
+            const user = await UserModel.findById({_id : id});
+            console.log('User service / updatePassword/ user=', user);
+            if (!user)
+                return { resultCode: resultCodes.Error };
+            const isEqual = await bcrypt.compare(oldPass, user.password);
+            if (!isEqual) {
+                //throw ApiError.BadRequest('Неверный пароль')
+                return { resultCode: resultCodes.oldUserPassIsIncorrect };
+            }
+            console.log('User service / updatePassword/ isEqual=', isEqual);
+            const newHashPassword = await bcrypt.hash(newPass, 3);
+            console.log('User service / updatePassword/ newHashPassword=', newHashPassword);
+
+            user.password = newHashPassword;
+            const suc = await user.save();
+            console.log('User service / updatePassword/ suc=', suc);
+
+            return { resultCode: resultCodes.Success};
+        }
+        catch (e) {
+            console.log('User service / updatePassword/ Erorr: ', e)
+        }
+
+    }
 }
 
 module.exports = new UserService();

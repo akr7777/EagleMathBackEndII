@@ -102,6 +102,16 @@ class UserController {
         }
     }
 
+    async updatePassword(req:Request, res:Response, next:NextFunction) {
+        try {
+            const {id, newPass, oldPass} = req.body;
+            const resultCode = await userService.updatePassword(id, newPass, oldPass);
+            res.json(resultCode);
+        } catch (e) {
+            next(e)
+        }
+    }
+
 }
 
 module.exports = new UserController();
