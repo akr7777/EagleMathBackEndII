@@ -4,6 +4,7 @@ import {log} from "util";
 const express = require('express');
 const cors =require('cors');
 const cookieParser = require("cookie-parser");
+const fileUpload = require('express-fileupload');
 const dotenv = require("dotenv");
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
@@ -26,6 +27,8 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.json());
 app.use(errorMiddleware);
+app.use(fileUpload({}));
+
 
 //const uri = process.env.DB_URL;
 //const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });

@@ -123,7 +123,7 @@ class UserService {
     }
 
     async getAvatarFile(id: string) {
-        const folderPath = process.env.INIT_CWD + '' + process.env.STANDART_USER_AVATAR;
+        const folderPath = process.env.INIT_CWD + '' + process.env.PATH_TO_UPLOADS;
         const fileName = 'avatar_' + id + '.';
         let avaFile =  folderPath + 'abstractAvatar.jpeg';
 
@@ -137,6 +137,29 @@ class UserService {
             })
         }
         return avaFile;
+    }
+
+    async saveNewAvatar(file: any, userId: string) {
+        const oldAvaPhoto = process.env.INIT_CWD + '' + process.env.PATH_TO_UPLOADS + 'avatar_' + userId;
+        console.log('user service / saveNewAvatar / oldAvaPhoto=', oldAvaPhoto)
+        if (process.env.IMAGE_EXTS) {
+            process.env.IMAGE_EXTS.split('/').forEach(ext => {
+                if (fs.existsSync(oldAvaPhoto + '.' + ext)) {
+                    fs.unlink(oldAvaPhoto + '.' + ext, err => {
+                        if (err) throw err; // не удалось удалить файл
+                        console.log('Файл успешно удалён');
+                    })
+                }
+            })
+        }
+        //Записываем на место старого фото новое фото с новым расширением
+        try {
+            const arr = file.name.split('.');
+            const fileExtension = arr[arr.length-1];
+            await file.mv(process.env.INIT_CWD + '' + process.env.PATH_TO_UPLOADS + 'avatar_' + userId + '.'+ fileExtension);
+        } catch (e) {
+            console.log('FILE!!! e= ',e)
+        }
     }
 
     async updatePassword(id: string, newPass: string, oldPass: string) {

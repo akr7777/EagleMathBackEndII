@@ -13,6 +13,17 @@ class DescriptionContectController {
         }
     }
 
+    async setDescription(req: Request, res: Response, next: NextFunction) {
+        const {title, description} = req.body;
+        console.log('setDescription = ', title, description);
+        const newDescription = await dcService.setDescription(title, description);
+        if (newDescription) {
+            res.json({...newDescription, resultCode: resultCodes.Success});
+        } else {
+            res.json({resultCode: resultCodes.Error});
+        }
+    }
+
     async getDescriptionPhoto(req: Request, res: Response, next: NextFunction) {
         console.log('Descr contacts Controller getDescriptionPhoto')
         try {
@@ -29,8 +40,33 @@ class DescriptionContectController {
         }
     }
 
+    async setDescriptionPhoto(req: Request, res: Response, next: NextFunction) {
+        try {
+            let file;
+            if (req.files && req.files.file)
+                file = req.files.file;
+            if (file) {
+                await dcService.setDescriptionPhoto(file);
+                res.json({resultCode: resultCodes.Success})
+            } else {
+                res.json( {resultCode: resultCodes.Error} )
+            }
+        } catch (e) {
+            next(e)
+        }
+    }
+
     async getContacts(req: Request, res: Response, next: NextFunction) {
         const contacts = await dcService.getContacts();
+        if (contacts) {
+            res.json({ ...contacts, resultCode: resultCodes.Success});
+        } else {
+            res.json({resultCode: resultCodes.Error});
+        }
+    }
+
+    async setContacts(req: Request, res: Response, next: NextFunction) {
+        const contacts = await dcService.setContacts(req.body);
         if (contacts) {
             res.json({ ...contacts, resultCode: resultCodes.Success});
         } else {

@@ -16,7 +16,10 @@ router.post('/deleteContentFromFavorites', contentController.deleteContentFromFa
 
 
 router.get('/getDescription', dcController.getDescription);
+router.post('/setDescription', dcController.setDescription);
 router.get('/getDescriptionPhoto', dcController.getDescriptionPhoto);
+router.post('/setDescriptionPhoto', dcController.setDescriptionPhoto);
 router.get('/getContacts', dcController.getContacts);
+router.post('/setContacts', dcController.setContacts);
 
 module.exports = router;

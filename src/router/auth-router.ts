@@ -19,5 +19,6 @@ router.get('/users', authMiddleware, userController.getUsers);
 router.get('/getAvatar', userController.getAvatar);
 
 router.post('/updatePassword', userController.updatePassword);
+router.post('/uploadAvatar', userController.uploadAvatar);
 
 module.exports = router;

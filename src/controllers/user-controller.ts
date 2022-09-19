@@ -2,11 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 const userService = require('../services/user-service');
 const {validationResult} = require('express-validator');
 const ApiError = require('../exceptions/api-error');
+const resultCodes = require("../utils/resultCodes");
 
 class UserController {
     async registration(req:Request, res:Response, next:NextFunction) {
         try {
-            console.log('req.body=', req.body);
+            //console.log('req.body=', req.body);
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
@@ -107,6 +108,24 @@ class UserController {
             const {id, newPass, oldPass} = req.body;
             const resultCode = await userService.updatePassword(id, newPass, oldPass);
             res.json(resultCode);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async uploadAvatar(req:Request, res:Response, next:NextFunction) {
+        try {
+            const { id } = req.body;
+            //req.files.file;
+            let file;
+            if (req.files && req.files.file)
+                file = req.files.file;
+            if (file) {
+                await userService.saveNewAvatar(file, id);
+                res.json({resultCode: resultCodes.Success});
+            } else {
+                res.json({resultCode: resultCodes.Error});
+            }
         } catch (e) {
             next(e)
         }
