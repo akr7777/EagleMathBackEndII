@@ -7,14 +7,11 @@ const resultCodes = require("../utils/resultCodes");
 class UserController {
     async registration(req:Request, res:Response, next:NextFunction) {
         try {
-            //console.log('req.body=', req.body);
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
             }
             const {name, email, password} = req.body;
-
-            console.log('email, pass=', email, password);
 
             const userData = await userService.registration(name, email, password);
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});

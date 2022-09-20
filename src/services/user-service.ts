@@ -5,6 +5,7 @@ import fs from "fs";
 const UserModel = require('../models/user-model');
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
+const favoriteModel = require('../models/favorite-content-model');
 //const mailService = require('../services/mail-service');
 const sendActivationEmail = require('../services/mail-service-2');
 const tokenService = require('../services/token-service');
@@ -31,16 +32,22 @@ class UserService {
             name: name,
         });
 
+        // Отправляем письмо активации
         console.log('SENDING ACTIVATION EMAIL...')
         //await sendActivationEmail(email, process.env.API_URL+'/auth/activate/'+activationLink);
         console.log('email=', email, 'activationLink=', process.env.API_URL+'/auth/activate/'+activationLink);
 
-        console.log('registration / TOKEN GENERATION')
+        //создаем токен для новго пользователя
         const userDto = new UserDto(user); //id, email, isActivated, activationLink, isAdmin, name
         const tokens = tokenService.generateTokens({...userDto});
 
         await tokenService.saveToken(userDto.id, tokens.refreshToken);
-        console.log('registration / TOKEN GENERATED AND SAVED')
+
+        //добавляем в таблицу favorites пустой array, чтобы функция была доступна для нового пользователя
+        await favoriteModel.create({
+            userId: userDto.id,
+            favorites: []
+        });
 
         return { ...tokens, user: userDto, resultCode: resultCodes.Success, message: "Пользователь успешно зарегистрирован"}
     }
