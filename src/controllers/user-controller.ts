@@ -24,7 +24,6 @@ class UserController {
     }
 
     async login(req:Request, res:Response, next:NextFunction) {
-        console.log('LOGINING...')
         try {
             const {email, password} = req.body;
             const userData = await userService.login(email, password);
@@ -37,13 +36,10 @@ class UserController {
     }
 
     async logout(req:Request, res:Response, next:NextFunction) {
-        console.log('LOGOUT...')
         try {
             const {refreshToken} = req.cookies;
-            console.log('logout refreshToken=', refreshToken)
             const token = await userService.logout(refreshToken);
             res.clearCookie('refreshToken');
-            console.log('logout, token', token)
             return res.json(token);
         } catch (e) {
             next(e);
@@ -61,10 +57,8 @@ class UserController {
     }
 
     async refresh(req:Request, res:Response, next:NextFunction) {
-        console.log('REFRESHING TOKEN')
         try {
             const {refreshToken} = req.cookies;
-            console.log('refreshToken = ',refreshToken)
             const userData = await userService.refresh(refreshToken);
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
             return res.json(userData);
@@ -74,7 +68,6 @@ class UserController {
     }
 
     async getUsers(req:Request, res:Response, next:NextFunction) {
-        console.log('UserController  / getUsers')
         try {
             const users = await userService.getAllUsers();
             res.json(users);
@@ -84,7 +77,6 @@ class UserController {
     }
 
     async getAvatar(req:Request, res:Response, next:NextFunction) {
-        console.log('UserController / getAvatar')
         try {
             const {id} = req.query;
             const avatarFile = await userService.getAvatarFile(id);

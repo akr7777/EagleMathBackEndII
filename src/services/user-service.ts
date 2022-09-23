@@ -53,7 +53,7 @@ class UserService {
     }
 
     async activate(activationLink: string) {
-        console.log('ACTIVATION USER ACCOUNT STARTING...')
+        //console.log('ACTIVATION USER ACCOUNT STARTING...')
         const user = await UserModel.findOne({activationLink: activationLink});
         if (!user) {
             //throw ApiError.BadRequest('Некорректная ссылка активации')
@@ -61,7 +61,7 @@ class UserService {
         }
         user.isActivated = true;
         await user.save();
-        console.log('ACTIVATION USER ACCOUNT FINISHED')
+        //console.log('ACTIVATION USER ACCOUNT FINISHED')
     }
 
     async login (email: string, password: string) {
@@ -102,7 +102,7 @@ class UserService {
     }
 
     async refresh(refreshToken:string) {
-        console.log('USER SERVICE , refreshToken=', refreshToken)
+        //console.log('USER SERVICE , refreshToken=', refreshToken)
         if (!refreshToken) {
             //ApiError.UnauthorizedError();
             return {resultCode: resultCodes.userUnautorized, message: 'Пользователь не авторизирован.'}
@@ -124,7 +124,6 @@ class UserService {
     }
 
     async getAllUsers() {
-        console.log("getAllUsers")
         const users = await UserModel.find();
         return users;
     }
@@ -134,11 +133,8 @@ class UserService {
         const fileName = 'avatar_' + id + '.';
         let avaFile =  folderPath + 'abstractAvatar.jpeg';
 
-        //const fs = require('fs');
-        //console.log('TYPES=', process.env.IMAGE_EXTS, typeof process.env.IMAGE_EXTS);
         if (process.env.IMAGE_EXTS) {
             process.env.IMAGE_EXTS.split('/').forEach(ext => {
-                //console.log('PATH!=', folderPath+fileName+ext, fs.existsSync(folderPath+fileName+ext))
                 if (fs.existsSync(folderPath + fileName + ext))
                     avaFile = folderPath + fileName + ext;
             })
@@ -148,7 +144,6 @@ class UserService {
 
     async saveNewAvatar(file: any, userId: string) {
         const oldAvaPhoto = process.env.INIT_CWD + '' + process.env.PATH_TO_UPLOADS + 'avatar_' + userId;
-        console.log('user service / saveNewAvatar / oldAvaPhoto=', oldAvaPhoto)
         if (process.env.IMAGE_EXTS) {
             process.env.IMAGE_EXTS.split('/').forEach(ext => {
                 if (fs.existsSync(oldAvaPhoto + '.' + ext)) {
@@ -172,7 +167,6 @@ class UserService {
     async updatePassword(id: string, newPass: string, oldPass: string) {
         try {
             const user = await UserModel.findById({_id : id});
-            console.log('User service / updatePassword/ user=', user);
             if (!user)
                 return { resultCode: resultCodes.Error };
             const isEqual = await bcrypt.compare(oldPass, user.password);
@@ -180,13 +174,10 @@ class UserService {
                 //throw ApiError.BadRequest('Неверный пароль')
                 return { resultCode: resultCodes.oldUserPassIsIncorrect };
             }
-            console.log('User service / updatePassword/ isEqual=', isEqual);
             const newHashPassword = await bcrypt.hash(newPass, 3);
-            console.log('User service / updatePassword/ newHashPassword=', newHashPassword);
 
             user.password = newHashPassword;
-            const suc = await user.save();
-            console.log('User service / updatePassword/ suc=', suc);
+            await user.save();
 
             return { resultCode: resultCodes.Success};
         }

@@ -1,5 +1,7 @@
 import {MaterialsType} from "../models/material-model";
 import {TaskType} from "../models/taskModel";
+//import {ObjectId} from "mongodb";
+const ObjectId = require('mongodb').ObjectId;
 //import {FavoriteContentModelType} from "../models/favorite-content-model";
 
 const categoryModel = require('../models/categories-model');
@@ -71,6 +73,21 @@ class ContentService {
         f.favorites = f.favorites.filter( (cid:string) => cid !== contentId);
         f.save();
         return f.favorites;
+    }
+
+    async getContent(contentId: string) {
+        const taskContent:TaskType = await taskModel.findOne({_id: ObjectId(contentId)});
+        if (!taskContent) {
+            const materialContent:MaterialsType = await materialModel.findOne({_id: ObjectId(contentId)});
+            return {
+                title: materialContent.label,
+                content: materialContent.content,
+            }
+        }
+        return {
+            title: taskContent.label,
+            content: taskContent.content,
+        }
     }
 
 }

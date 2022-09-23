@@ -3,9 +3,7 @@ const contentService = require('../services/content-service');
 
 class ContentController {
     async getAllCategories(req: Request, res: Response, next: NextFunction) {
-        //console.log('ContentController / getAllCategories')
         const categories = await contentService.getAllCategories();
-        //console.log('ContentController / getAllCategories / categories=', categories)
         res.json(categories);
     }
 
@@ -21,7 +19,6 @@ class ContentController {
 
     async getFavoritesContent(req: Request, res: Response, next: NextFunction) {
         const {userId} = req.body;
-        console.log('content controller / getFavoritesContent, userId=', userId)
         const favorites = await contentService.getFavoriteContent(userId);
         res.json(favorites);
     }
@@ -34,6 +31,12 @@ class ContentController {
         const {userId, contentId} = req.body;
         const userFavoriteMaterials = await contentService.deleteContentFromFavorites(userId, contentId);
         res.json(userFavoriteMaterials);
+    }
+
+    async getContent(req: Request, res: Response, next: NextFunction) {
+        const {contentId} = req.params;
+        const content = await contentService.getContent(contentId);
+        res.json(content);
     }
 
 }

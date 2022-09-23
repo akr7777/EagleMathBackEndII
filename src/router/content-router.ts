@@ -10,10 +10,11 @@ router.get('/getAllCategories', contentController.getAllCategories);
 router.get('/getAllMaterials', contentController.getAllMaterials);
 router.get('/getAllTasks', contentController.getAllTasks);
 
+router.get('/getContent/:contentId', contentController.getContent);
+
 router.post('/getFavorites', contentController.getFavoritesContent);
 router.post('/addContentToFavorites', contentController.addContentToFavorites);
 router.post('/deleteContentFromFavorites', contentController.deleteContentFromFavorites);
-
 
 router.get('/getDescription', dcController.getDescription);
 router.post('/setDescription', dcController.setDescription);
