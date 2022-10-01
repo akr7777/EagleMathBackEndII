@@ -1,6 +1,7 @@
 import {MaterialsType} from "../models/material-model";
 import {TaskType} from "../models/task-model";
 import {ContentType} from "../models/content-model";
+import fs from "fs";
 const ObjectId = require('mongodb').ObjectId;
 
 const categoryModel = require('../models/categories-model');
@@ -73,19 +74,6 @@ class ContentService {
     }
 
     async getContent(contentId: string) {
-        /*const taskContent:TaskType = await taskModel.findOne({_id: ObjectId(contentId)});
-        if (!taskContent) {
-            const materialContent:MaterialsType = await materialModel.findOne({_id: ObjectId(contentId)});
-            return {
-                title: materialContent.label,
-                content: materialContent.content,
-            }
-        }
-        return {
-            title: taskContent.label,
-            content: taskContent.content,
-        }*/
-        //const content:ContentType = await contentModel.findOne({_id: ObjectId(contentId)});
         const data:ContentType = await contentModel.findOne({contentId: contentId});
         if (data) {
             return {
@@ -105,27 +93,6 @@ class ContentService {
     }
 
     async setContent (newContent: {content: Array<ContentType>, contentId: string}) {
-        /*for (let i=0; i<newContent.length; i++) {
-            const content = await contentModel.findOne({_id: ObjectId(newContent[i].contentId), index: newContent[i].index});
-            if (content) {
-                content.contentId = newContent[i].contentId;
-                content.type = newContent[i].type;
-                content.index = newContent[i].index;
-                content.content = newContent[i].content;
-                content.save();
-            } else {
-                await contentModel.create({
-                    contentId: newContent[i].contentId,
-                    index: newContent[i].index,
-                    type: newContent[i].type,
-                    content: newContent[i].content,
-                });
-            }
-        }*/
-        //const content:ContentType = await contentModel.findOne({_id: ObjectId(newContent.contentId)});
-
-        //console.log('newContent=', newContent)
-
         const data = await contentModel.findOne({contentId: newContent.contentId});
         if (data) {
             data.contentId = newContent.contentId;
@@ -147,6 +114,26 @@ class ContentService {
             }
         }
         //return { resultCode: resultCodes.Error }
+    }
+
+    async setContentImage(file: any, fileName: string) {
+        //const data = await contentModel.findOne({contentId: contentId});
+        const path = process.env.INIT_CWD + "" + process.env.PATH_TO_CONTENT + fileName;
+        console.log('content-servoce / setContentImage / path=', path);
+
+        try {
+            await file.mv(path);
+            return resultCodes.Success;
+        } catch (e) {
+            console.log("content-service / setContentImage / error = ", e);
+            return resultCodes.Error;
+        }
+    }
+
+    async getContentImageFile(fileName: string) {
+        const file = process.env.INIT_CWD + "" + process.env.PATH_TO_CONTENT + fileName;
+        if (fs.existsSync(file))
+            return file;
     }
 
 }

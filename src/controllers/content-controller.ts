@@ -1,4 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import {Request, Response, NextFunction} from 'express';
+
+const resultCodes = require("../utils/resultCodes");
 const contentService = require('../services/content-service');
 
 class ContentController {
@@ -22,11 +24,13 @@ class ContentController {
         const favorites = await contentService.getFavoriteContent(userId);
         res.json(favorites);
     }
+
     async addContentToFavorites(req: Request, res: Response, next: NextFunction) {
         const {userId, contentId} = req.body;
         const userFavoriteMaterials = await contentService.addContentToFavorites(userId, contentId);
         res.json(userFavoriteMaterials);
     }
+
     async deleteContentFromFavorites(req: Request, res: Response, next: NextFunction) {
         const {userId, contentId} = req.body;
         const userFavoriteMaterials = await contentService.deleteContentFromFavorites(userId, contentId);
@@ -43,6 +47,26 @@ class ContentController {
         const newContent = req.body;
         const result = await contentService.setContent(newContent);
         res.json(result);
+    }
+
+    async setContentImage(req: Request, res: Response, next: NextFunction) {
+        const {fileName} = req.body;
+        let file;
+        if (req.files && req.files.file)
+            file = req.files.file;
+        if (file) {
+            const result = await contentService.setContentImage(file, fileName);
+            res.json(result);
+        } else {
+            res.json({resultCode: resultCodes.Error});
+        }
+    }
+
+    async getContentImage(req: Request, res: Response, next: NextFunction) {
+        const {name} = req.query;
+        const file = await contentService.getContentImageFile(name);
+        console.log('content-controller / getContentImage/ file=', file)
+        res.sendFile(file);
     }
 
 }
