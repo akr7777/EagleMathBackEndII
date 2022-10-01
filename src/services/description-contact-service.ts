@@ -44,13 +44,13 @@ class DescriptionContactService {
             //    description:string, email:string, phone:string, skype:string, telegram:string, title:string, whatsapp:string
             const newContacts = await dcModel.findOne();
             if (newContacts) {
-                newContacts.contactsTitle = newContactInfo.title;
-                newContacts.contactsDescription = newContactInfo.description;
-                newContacts.contactsPhone = newContactInfo.phone;
-                newContacts.contactsTelegram = newContactInfo.telegram;
-                newContacts.contactsWhatsApp = newContactInfo.whatsapp;
-                newContacts.contactsSkype = newContactInfo.skype;
-                newContacts.contactsEmail = newContactInfo.email;
+                newContacts.contactsTitle = newContactInfo.title || "";
+                newContacts.contactsDescription = newContactInfo.description || "";
+                newContacts.contactsPhone = newContactInfo.phone || "";
+                newContacts.contactsTelegram = newContactInfo.telegram || "";
+                newContacts.contactsWhatsApp = newContactInfo.whatsapp || "";
+                newContacts.contactsSkype = newContactInfo.skype || "";
+                newContacts.contactsEmail = newContactInfo.email || "";
                 newContacts.save();
                 return {
                     title: newContactInfo.title,

@@ -11,6 +11,7 @@ router.get('/getAllMaterials', contentController.getAllMaterials);
 router.get('/getAllTasks', contentController.getAllTasks);
 
 router.get('/getContent/:contentId', contentController.getContent);
+router.post('/setContent', contentController.setContent);
 
 router.post('/getFavorites', contentController.getFavoritesContent);
 router.post('/addContentToFavorites', contentController.addContentToFavorites);

@@ -39,6 +39,12 @@ class ContentController {
         res.json(content);
     }
 
+    async setContent(req: Request, res: Response, next: NextFunction) {
+        const newContent = req.body;
+        const result = await contentService.setContent(newContent);
+        res.json(result);
+    }
+
 }
 
 module.exports = new ContentController();
