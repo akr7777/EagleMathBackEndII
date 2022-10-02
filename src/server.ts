@@ -12,6 +12,8 @@ export const {Schema, model} = require('mongoose');
 const mongoose = require('mongoose');
 const routerAuth = require('./router/auth-router');
 const routerContent = require('./router/content-router');
+const routerUsers = require('./router/users-router');
+
 const errorMiddleware = require('./middleware/error-middleware');
 
 if (process.env.NODE_ENV !== "production") {
@@ -37,6 +39,7 @@ app.use(fileUpload({}));
 //ROUTES
 app.use('/auth', routerAuth);
 app.use('/content', routerContent);
+app.use('/users', routerUsers)
 
 const start = async () => {
 

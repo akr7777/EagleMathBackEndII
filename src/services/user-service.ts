@@ -123,11 +123,6 @@ class UserService {
         return { ...tokens, user: userDto, resultCode: resultCodes.Success}
     }
 
-    async getAllUsers() {
-        const users = await UserModel.find();
-        return users;
-    }
-
     async getAvatarFile(id: string) {
         const folderPath = process.env.INIT_CWD + '' + process.env.PATH_TO_UPLOADS;
         const fileName = 'avatar_' + id + '.';
@@ -185,6 +180,34 @@ class UserService {
             console.log('User service / updatePassword/ Erorr: ', e)
         }
 
+    }
+
+    async getAllUsers() {
+        const users:Array<any> = await UserModel.find();
+        return users.map( el => {
+            return {
+                userId: el._id,
+                name: el.name,
+                email: el.email,
+                isAdmin: el.isAdmin,
+            }
+        });
+    }
+
+    async getOneUser(userId: string) {
+        const user = await UserModel.findById({_id : userId});
+        if (user) {
+            return {
+                user: {
+                    userId: user.userId,
+                    name: user.name,
+                    email: user.email,
+                    isAdmin: user.isAdmin,
+                },
+                resultCode: resultCodes.Success
+            }
+        }
+        return { resultCode: resultCodes.Error}
     }
 }
 

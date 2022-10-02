@@ -67,15 +67,6 @@ class UserController {
         }
     }
 
-    async getUsers(req:Request, res:Response, next:NextFunction) {
-        try {
-            const users = await userService.getAllUsers();
-            res.json(users);
-        } catch (e) {
-            next(e);
-        }
-    }
-
     async getAvatar(req:Request, res:Response, next:NextFunction) {
         try {
             const {id} = req.query;
@@ -117,6 +108,25 @@ class UserController {
             }
         } catch (e) {
             next(e)
+        }
+    }
+
+    async getUsers(req:Request, res:Response, next:NextFunction) {
+        try {
+            const users = await userService.getAllUsers();
+            res.json(users);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async getOneUser(req:Request, res:Response, next:NextFunction) {
+        try {
+            const {userId} = req.body;
+            const user = await userService.getOneUser(userId);
+            res.json(user);
+        } catch (e) {
+            next(e);
         }
     }
 
