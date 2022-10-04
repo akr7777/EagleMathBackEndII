@@ -26,4 +26,7 @@ router.post('/setDescriptionPhoto', dcController.setDescriptionPhoto);
 router.get('/getContacts', dcController.getContacts);
 router.post('/setContacts', dcController.setContacts);
 
+router.post('/renameContent', contentController.renameContent);
+router.post('/changeParentId', contentController.changeParentId);
+
 module.exports = router;

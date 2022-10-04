@@ -20,7 +20,7 @@ class ContentService {
     async getAllMaterials() {
         const result:Array<{id: string, label: string, parentId: string}> = [];
 
-        result.forEach(d => d);
+        //result.forEach(d => d);
 
         const materials:Array<MaterialsType> = await materialModel.find();
         if (materials) {
@@ -134,6 +134,43 @@ class ContentService {
         const file = process.env.INIT_CWD + "" + process.env.PATH_TO_CONTENT + fileName;
         if (fs.existsSync(file))
             return file;
+    }
+
+    async renameContent(contentId: string, newName: string) {
+        let cont = await materialModel.findOne({_id: contentId});
+        if (cont) {
+            cont.label = newName;
+            cont.save();
+            return resultCodes.Success;
+        } else {
+            cont = await taskModel.findOne({_id: contentId});
+            if (cont) {
+                cont.label = newName;
+                cont.save();
+                return resultCodes.Success;
+            } else {
+                cont = await categoryModel.findOne({_id: contentId});
+                if (cont) {
+                    cont.label = newName;
+                    cont.save();
+                    return resultCodes.Success;
+                }
+            }
+
+        }
+        return resultCodes.Error;
+    }
+
+    async changeParentId(contentId: string, newParentId: string) {
+        let cont = await materialModel.findOne({_id: contentId});
+        if (!cont) cont = await taskModel.findOne({_id: contentId});
+        if (!cont) cont = await categoryModel.findOne({_id: contentId});
+        if (cont) {
+            cont.parentId = newParentId;
+            cont.save();
+            return resultCodes.Success;
+        }
+        return resultCodes.Error;
     }
 
 }

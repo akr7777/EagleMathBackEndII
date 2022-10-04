@@ -65,8 +65,19 @@ class ContentController {
     async getContentImage(req: Request, res: Response, next: NextFunction) {
         const {name} = req.query;
         const file = await contentService.getContentImageFile(name);
-        console.log('content-controller / getContentImage/ file=', file)
         res.sendFile(file);
+    }
+
+    async renameContent(req: Request, res: Response, next: NextFunction) {
+        const {contentId, newName} = req.body;
+        const result = await contentService.renameContent(contentId, newName);
+        res.json(result);
+    }
+
+    async changeParentId(req: Request, res: Response, next: NextFunction) {
+        const {contentId, newParentId} = req.body;
+        const result = await contentService.changeParentId(contentId, newParentId);
+        res.json(result);
     }
 
 }
