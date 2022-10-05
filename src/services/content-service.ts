@@ -77,10 +77,6 @@ class ContentService {
         const data:ContentType = await contentModel.findOne({contentId: contentId});
         if (data) {
             return {
-                /*contentId: content.contentId,
-                index: content.index,
-                type: content.type,
-                content: content.content,*/
                 content: data.content,
                 resultCode: resultCodes.Success,
             }

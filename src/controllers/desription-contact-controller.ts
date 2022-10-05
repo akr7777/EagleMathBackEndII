@@ -15,7 +15,6 @@ class DescriptionContectController {
 
     async setDescription(req: Request, res: Response, next: NextFunction) {
         const {title, description} = req.body;
-        console.log('setDescription = ', title, description);
         const newDescription = await dcService.setDescription(title, description);
         if (newDescription) {
             res.json({...newDescription, resultCode: resultCodes.Success});
@@ -25,7 +24,6 @@ class DescriptionContectController {
     }
 
     async getDescriptionPhoto(req: Request, res: Response, next: NextFunction) {
-        console.log('Descr contacts Controller getDescriptionPhoto')
         try {
             const descriptionPhotoFile = dcService.getDescriptionPhoto();
             //console.log('descriptionPhotoFile=',descriptionPhotoFile)

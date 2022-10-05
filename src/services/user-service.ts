@@ -1,7 +1,4 @@
-//import {client} from "../server";
-
 import fs from "fs";
-
 const UserModel = require('../models/user-model');
 const bcrypt = require('bcrypt');
 const uuid = require('uuid');
@@ -12,7 +9,6 @@ const tokenService = require('../services/token-service');
 const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exceptions/api-error');
 const resultCodes = require('../utils/resultCodes');
-//import { Request, Response, NextFunction } from 'express';
 
 class UserService {
     async registration(name: string, email: string, password: string) {
@@ -199,7 +195,7 @@ class UserService {
         if (user) {
             return {
                 user: {
-                    userId: user.userId,
+                    userId: userId,
                     name: user.name,
                     email: user.email,
                     isAdmin: user.isAdmin,
@@ -208,6 +204,34 @@ class UserService {
             }
         }
         return { resultCode: resultCodes.Error}
+    }
+
+    async deleteUser(userId: string) {
+        await UserModel.deleteOne({_id: userId}, (err: any, result: any) => {
+            console.log('userServeice / deleteUser / err=', err, 'result=', result)
+        });
+        const users = await this.getAllUsers();
+        return users;
+    }
+
+    async makeUserAdmin(userId: string) {
+        const user = await UserModel.findById(userId);
+        if (user) {
+            user.isAdmin = true;
+            await user.save();
+        }
+        const users = await this.getAllUsers();
+        return {users: users, currentUserID: userId, resultCode: resultCodes.Success};
+    }
+
+    async makeUserAsUser(userId: string) {
+        const userNewAdmin = await UserModel.findOne({_id: userId});
+        if (userNewAdmin) {
+            userNewAdmin.isAdmin = false;
+            await userNewAdmin.save();
+        }
+        const users = await this.getAllUsers();
+        return {users: users, currentUserID: userId, resultCode: resultCodes.Success};
     }
 }
 

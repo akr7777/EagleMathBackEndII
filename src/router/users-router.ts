@@ -11,6 +11,9 @@ const {body} = require('express-validator');
 
 router.get('/getUsers', /*authMiddleware,*/ userController.getUsers);
 router.post('/getOneUser', /*authMiddleware,*/ userController.getOneUser);
+router.post('/deleteUser', /*authMiddleware,*/ userController.deleteUser);
+router.post('/makeUserAdmin', userController.makeUserAdmin);
+router.post('/makeUserAsUser', userController.makeUserAsUser);
 
 
 module.exports = router;

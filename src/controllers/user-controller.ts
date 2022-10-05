@@ -130,6 +130,38 @@ class UserController {
         }
     }
 
+    async deleteUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {userId} = req.body;
+            const response = await userService.deleteUser(userId);
+            res.json(response);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async makeUserAdmin(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {userId} = req.body;
+            const response = await userService.makeUserAdmin(userId);
+            //console.log('userCont makeUserAdmin, resp=', response);
+            res.json(response);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async makeUserAsUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const {userId} = req.body;
+            const response = await userService.makeUserAsUser(userId);
+            //console.log('userCont, makeUserAsUser ,resp=', response);
+            res.json(response);
+        } catch (e) {
+            next(e);
+        }
+    }
+
 }
 
 module.exports = new UserController();
