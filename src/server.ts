@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const routerAuth = require('./router/auth-router');
 const routerContent = require('./router/content-router');
 const routerUsers = require('./router/users-router');
+const routerNotes = require('./router/notes-router');
 
 const errorMiddleware = require('./middleware/error-middleware');
 
@@ -39,7 +40,8 @@ app.use(fileUpload({}));
 //ROUTES
 app.use('/auth', routerAuth);
 app.use('/content', routerContent);
-app.use('/users', routerUsers)
+app.use('/users', routerUsers);
+app.use('/notes', routerNotes)
 
 const start = async () => {
 
