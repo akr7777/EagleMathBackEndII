@@ -80,6 +80,12 @@ class ContentController {
         res.json(result);
     }
 
+    async deleteContent(req: Request, res: Response, next: NextFunction) {
+        const {contentId} = req.body;
+        const result = await contentService.deleteContent(contentId);
+        res.json(result);
+    }
+
 }
 
 module.exports = new ContentController();

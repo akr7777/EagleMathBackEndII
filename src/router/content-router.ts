@@ -29,4 +29,6 @@ router.post('/setContacts', dcController.setContacts);
 router.post('/renameContent', contentController.renameContent);
 router.post('/changeParentId', contentController.changeParentId);
 
+router.post('/deleteContent', contentController.deleteContent)
+
 module.exports = router;

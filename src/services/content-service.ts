@@ -169,6 +169,22 @@ class ContentService {
         return resultCodes.Error;
     }
 
+    async deleteContent(contentId: string) {
+        const content = await contentModel.findOne({contentId: contentId});
+        if (content) {
+            let m = await materialModel.findOne({_id: contentId});
+            if (!m) m = await taskModel.findOne({_id: contentId});
+            //if (!m) m = await categoryModel.findOne({_id: contentId});
+            if (m) {
+                await materialModel.deleteOne({_id: contentId});
+                await taskModel.deleteOne({_id: contentId});
+                await contentModel.deleteOne({contentId: contentId});
+                return resultCodes.Success;
+            }
+        }
+        return resultCodes.Error;
+    }
+
 }
 
 module.exports = new ContentService();
