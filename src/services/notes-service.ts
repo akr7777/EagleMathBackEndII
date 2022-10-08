@@ -27,16 +27,51 @@ class NotesService {
                 if (notesArray)
                     userNotes.notes = notesArray;
                 await userNotes.save();
-                return { notes: userNotes, resultCode: resultCodes.Success}
+                return { notes: userNotes.notes, resultCode: resultCodes.Success}
             } else {
                 const notes = await notesModel.create({
                     userId: userId,
                     notes: notesArray
                 });
-                return { notes: notes, resultCode: resultCodes.Success}
+                return { notes: notes.notes, resultCode: resultCodes.Success}
             }
             return { resultCode: resultCodes.Error }
 
+        } catch (e) {
+            console.log('getNotes Error = ', e)
+        }
+    }
+
+
+    async changeNoteStatus(userId: string, noteId: string, newStatus: boolean) {
+        try {
+            const userNotes = await notesModel.findOne({userId: userId});
+            if (userNotes) {
+                userNotes.notes = userNotes.notes.map( (note:NoteDataType) => {
+                    if (note.noteId === noteId)
+                        note = {...note, isActive: newStatus}
+                    return note
+                });
+                await userNotes.save();
+                return { notes: userNotes.notes, resultCode: resultCodes.Success}
+            }
+            return { resultCode: resultCodes.Error }
+
+        } catch (e) {
+            console.log('getNotes Error = ', e)
+        }
+    }
+
+
+    async deleteNote(userId: string, noteId: string) {
+        try {
+            const userNotes = await notesModel.findOne({userId: userId});
+            if (userNotes) {
+                userNotes.notes = userNotes.notes.filter( (note:NoteDataType) => note.noteId !== noteId)
+                await userNotes.save();
+                return { notes: userNotes.notes, resultCode: resultCodes.Success}
+            }
+            return { resultCode: resultCodes.Error }
         } catch (e) {
             console.log('getNotes Error = ', e)
         }

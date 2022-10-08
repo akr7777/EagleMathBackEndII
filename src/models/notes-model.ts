@@ -10,7 +10,7 @@ export type NoteDataType = {
 }
 const NotesSchema = new Schema({
     userId: {type: String, unique: true},
-    notes: {type: Array, required: true, default: []},
+    notes: {type: Array, /*required: true, */default: []},
 });
 
 module.exports = model('Notes', NotesSchema);

@@ -14,6 +14,20 @@ class NotesController {
         const result = await notesService.setNotes(userId, notes);
         res.json(result);
     }
+
+    async changeNoteStatus(req: Request, res: Response, next: NextFunction) {
+        const {userId, noteId, newStatus} = req.body;
+        const result = await notesService.changeNoteStatus(userId, noteId, newStatus);
+        //console.log('NotesController / changeNoteStatus / result=', result)
+        res.json(result);
+    }
+
+    async deleteNote(req: Request, res: Response, next: NextFunction) {
+        const {userId, noteId} = req.body;
+        const result = await notesService.deleteNote(userId, noteId);
+        //console.log('NotesController / changeNoteStatus / result=', result)
+        res.json(result);
+    }
 }
 
 module.exports = new NotesController();
