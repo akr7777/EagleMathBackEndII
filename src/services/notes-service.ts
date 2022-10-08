@@ -76,6 +76,44 @@ class NotesService {
             console.log('getNotes Error = ', e)
         }
     }
+
+    async changeNoteTitle(userId: string, noteId: string, newTextTitleValue: string) {
+        try {
+            const userNotes = await notesModel.findOne({userId: userId});
+            if (userNotes) {
+                userNotes.notes = userNotes.notes.map( (note:NoteDataType) => {
+                    if (note.noteId === noteId)
+                        note = {...note, title: newTextTitleValue}
+                    return note
+                });
+                await userNotes.save();
+                return { notes: userNotes.notes, resultCode: resultCodes.Success}
+            }
+            return { resultCode: resultCodes.Error }
+
+        } catch (e) {
+            console.log('getNotes Error = ', e)
+        }
+    }
+
+    async changeNoteText(userId: string, noteId: string, newTextTitleValue: string) {
+        try {
+            const userNotes = await notesModel.findOne({userId: userId});
+            if (userNotes) {
+                userNotes.notes = userNotes.notes.map( (note:NoteDataType) => {
+                    if (note.noteId === noteId)
+                        note = {...note, text: newTextTitleValue}
+                    return note
+                });
+                await userNotes.save();
+                return { notes: userNotes.notes, resultCode: resultCodes.Success}
+            }
+            return { resultCode: resultCodes.Error }
+
+        } catch (e) {
+            console.log('getNotes Error = ', e)
+        }
+    }
 }
 
 module.exports = new NotesService();

@@ -8,6 +8,8 @@ const router = Router();
 router.post('/getNotes', notesController.getNotes);
 router.post('/setNotes', notesController.setNotes);
 router.post('/changeNoteStatus', notesController.changeNoteStatus);
-router.post('/deleteNote', notesController.deleteNote)
+router.post('/deleteNote', notesController.deleteNote);
+router.post('/changeNoteTitle', notesController.changeNoteTitle);
+router.post('/changeNoteText', notesController.changeNoteText);
 
 module.exports = router;

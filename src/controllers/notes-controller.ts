@@ -25,7 +25,18 @@ class NotesController {
     async deleteNote(req: Request, res: Response, next: NextFunction) {
         const {userId, noteId} = req.body;
         const result = await notesService.deleteNote(userId, noteId);
-        //console.log('NotesController / changeNoteStatus / result=', result)
+        res.json(result);
+    }
+
+    async changeNoteTitle(req: Request, res: Response, next: NextFunction) {
+        const {userId, noteId, newTextTitleValue} = req.body;
+        const result = await notesService.changeNoteTitle(userId, noteId, newTextTitleValue);
+        res.json(result);
+    }
+
+    async changeNoteText(req: Request, res: Response, next: NextFunction) {
+        const {userId, noteId, newTextTitleValue} = req.body;
+        const result = await notesService.changeNoteText(userId, noteId, newTextTitleValue);
         res.json(result);
     }
 }
