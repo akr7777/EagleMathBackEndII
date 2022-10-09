@@ -86,6 +86,24 @@ class ContentController {
         res.json(result);
     }
 
+    /*async getContentType(req: Request, res: Response, next: NextFunction) {
+        const {contentId} = req.body;
+        const result = await contentService.getContentType(contentId);
+        res.json(result);
+    }*/
+
+    async addMaterial(req: Request, res: Response, next: NextFunction) {
+        const {parentContentId} = req.body;
+        const result = await contentService.addMaterial(parentContentId);
+        res.json(result);
+    }
+
+    async addTask(req: Request, res: Response, next: NextFunction) {
+        const {parentContentId} = req.body;
+        const result = await contentService.addTask(parentContentId);
+        res.json(result);
+    }
+
 }
 
 module.exports = new ContentController();

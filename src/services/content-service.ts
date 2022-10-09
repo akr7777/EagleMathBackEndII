@@ -2,6 +2,7 @@ import {MaterialsType} from "../models/material-model";
 import {TaskType} from "../models/task-model";
 import {ContentType} from "../models/content-model";
 import fs from "fs";
+import {v4} from "uuid";
 const ObjectId = require('mongodb').ObjectId;
 
 const categoryModel = require('../models/categories-model');
@@ -179,9 +180,69 @@ class ContentService {
                 await materialModel.deleteOne({_id: contentId});
                 await taskModel.deleteOne({_id: contentId});
                 await contentModel.deleteOne({contentId: contentId});
-                return resultCodes.Success;
+                return {resultCode: resultCodes.Success};
             }
         }
+        return {resultCode: resultCodes.Error};
+    }
+
+    /*async getContentType(contentId: string) {
+        try {
+            const m = await materialModel.findOne({_id: contentId});
+            if (m) return {contentType: "Material", resultCode: resultCodes.Success}
+            const t = await taskModel.findOne({_id: contentId});
+            if (t) return {contentType: "Task", resultCode: resultCodes.Success}
+            const c = await categoryModel.findOne({_id: contentId});
+            if (c) return {contentType: "Category", resultCode: resultCodes.Success}
+            return {contentType: undefined, resultCode: resultCodes.Success}
+        } catch (e) {
+            console.log('content-service / getContentType / error=', e);
+            return { resultCode: resultCodes.Error};
+        }
+        return { resultCode: resultCodes.Error};
+    }*/
+
+    async addMaterial(parentContentId: string) {
+        try {
+            const newElementId = v4();
+            const newElement = await materialModel.create({
+                _id: ObjectId(newElementId),
+                label: 'Новый метериал: название',
+                parentId: parentContentId,
+                content: 'Новый материал контент'
+            });
+            console.log('content-service / addTask / newElement=', newElement);
+            //console.log('newelement/_id=', newElement.insertedId.toString() )
+            return {resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('content-service / addMaterial / error=', e);
+            return { resultCode: resultCodes.Error};
+        }
+        return { resultCode: resultCodes.Error};
+    }
+
+    async addTask(parentContentId: string) {
+        try {
+            //const newElementId = new ObjectId;//v4();
+            const newElement = await taskModel.create({
+                //_id: newElementId,
+                label: 'Новая задача: название',
+                parentId: parentContentId,
+                content: 'Новая задача контент'
+            });
+            //console.log('content-service / addTask / newElement=', newElement)
+            //console.log('newelement/_id=', newElementId )
+            //console.log('3', await taskModel.findById(newElement._id))
+            await contentModel.create({
+                contentId: newElement._id,
+                content: []
+            });
+            return {resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('content-service / addTask / error=', e);
+            return { resultCode: resultCodes.Error};
+        }
+        return { resultCode: resultCodes.Error};
         return resultCodes.Error;
     }
 

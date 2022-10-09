@@ -29,6 +29,11 @@ router.post('/setContacts', dcController.setContacts);
 router.post('/renameContent', contentController.renameContent);
 router.post('/changeParentId', contentController.changeParentId);
 
-router.post('/deleteContent', contentController.deleteContent)
+router.post('/deleteContent', contentController.deleteContent);
+
+//router.post('/getContentType', contentController.getContentType);
+router.post('/addMaterial', contentController.addMaterial);
+router.post('/addTask', contentController.addTask);
+
 
 module.exports = router;

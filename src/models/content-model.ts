@@ -17,7 +17,7 @@ const ContentSchema = new Schema({
     contentId: {type: String, required: true},
     //index: {type: Number, required: true},
     //type: {type: String, required: true},
-    content: {type: Array, required: true}
+    content: {type: Array, required: true, default: []}
 });
 
 module.exports = model('Content', ContentSchema);
