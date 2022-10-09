@@ -104,6 +104,12 @@ class ContentController {
         res.json(result);
     }
 
+    async addCategory(req: Request, res: Response, next: NextFunction) {
+        const {parentContentId} = req.body;
+        const result = await contentService.addCategory(parentContentId);
+        res.json(result);
+    }
+
 }
 
 module.exports = new ContentController();

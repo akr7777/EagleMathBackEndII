@@ -204,15 +204,15 @@ class ContentService {
 
     async addMaterial(parentContentId: string) {
         try {
-            const newElementId = v4();
             const newElement = await materialModel.create({
-                _id: ObjectId(newElementId),
                 label: 'Новый метериал: название',
                 parentId: parentContentId,
                 content: 'Новый материал контент'
             });
-            console.log('content-service / addTask / newElement=', newElement);
-            //console.log('newelement/_id=', newElement.insertedId.toString() )
+            await contentModel.create({
+                contentId: newElement._id,
+                content: []
+            });
             return {resultCode: resultCodes.Success};
         } catch (e) {
             console.log('content-service / addMaterial / error=', e);
@@ -223,16 +223,11 @@ class ContentService {
 
     async addTask(parentContentId: string) {
         try {
-            //const newElementId = new ObjectId;//v4();
             const newElement = await taskModel.create({
-                //_id: newElementId,
                 label: 'Новая задача: название',
                 parentId: parentContentId,
                 content: 'Новая задача контент'
             });
-            //console.log('content-service / addTask / newElement=', newElement)
-            //console.log('newelement/_id=', newElementId )
-            //console.log('3', await taskModel.findById(newElement._id))
             await contentModel.create({
                 contentId: newElement._id,
                 content: []
@@ -244,6 +239,21 @@ class ContentService {
         }
         return { resultCode: resultCodes.Error};
         return resultCodes.Error;
+    }
+
+    async addCategory(parentContentId: string) {
+        console.log('content-service / addCategory / parentId=', parentContentId)
+        try {
+            const newElement = await categoryModel.create({
+                label: 'Новая категория',
+                parentId: parentContentId,
+            });
+            return {resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('content-service / addMaterial / error=', e);
+            return { resultCode: resultCodes.Error};
+        }
+        return { resultCode: resultCodes.Error};
     }
 
 }
