@@ -35,6 +35,7 @@ router.post('/deleteContent', contentController.deleteContent);
 router.post('/addMaterial', contentController.addMaterial);
 router.post('/addTask', contentController.addTask);
 router.post('/addCategory', contentController.addCategory);
+router.post('/deleteCategory', contentController.deleteCategory);
 
 
 module.exports = router;

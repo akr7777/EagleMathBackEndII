@@ -15,7 +15,8 @@ const resultCodes = require('../utils/resultCodes');
 
 class ContentService {
     async getAllCategories() {
-        return categoryModel.find();
+        const response = await categoryModel.find();
+        return response;
     }
 
     async getAllMaterials() {
@@ -238,17 +239,30 @@ class ContentService {
             return { resultCode: resultCodes.Error};
         }
         return { resultCode: resultCodes.Error};
-        return resultCodes.Error;
     }
 
     async addCategory(parentContentId: string) {
-        console.log('content-service / addCategory / parentId=', parentContentId)
         try {
-            const newElement = await categoryModel.create({
+            await categoryModel.create({
                 label: 'Новая категория',
                 parentId: parentContentId,
             });
-            return {resultCode: resultCodes.Success};
+            const categories = await categoryModel.find();
+            return {categories, resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('content-service / addMaterial / error=', e);
+            return { resultCode: resultCodes.Error};
+        }
+        return { resultCode: resultCodes.Error};
+    }
+
+    async deleteCategory(contentId: string) {
+        try {
+            await categoryModel.deleteOne({_id: contentId});
+            await taskModel.deleteMany({parentId: contentId});
+            await materialModel.deleteMany({parentId: contentId});
+            const categories = await categoryModel.find();
+            return {categories, resultCode: resultCodes.Success};
         } catch (e) {
             console.log('content-service / addMaterial / error=', e);
             return { resultCode: resultCodes.Error};
