@@ -14,6 +14,7 @@ const routerAuth = require('./router/auth-router');
 const routerContent = require('./router/content-router');
 const routerUsers = require('./router/users-router');
 const routerNotes = require('./router/notes-router');
+const routerTest = require('./router/test-router');
 
 const errorMiddleware = require('./middleware/error-middleware');
 
@@ -41,10 +42,10 @@ app.use(fileUpload({}));
 app.use('/auth', routerAuth);
 app.use('/content', routerContent);
 app.use('/users', routerUsers);
-app.use('/notes', routerNotes)
+app.use('/notes', routerNotes);
+app.use('/test', routerTest);
 
 const start = async () => {
-
     try {
         /*client.connect(async (err:any) => {
             if (err) console.log('Server.ts / start / comment / DB connetion error from DbCheck3/client.connect=', err);
