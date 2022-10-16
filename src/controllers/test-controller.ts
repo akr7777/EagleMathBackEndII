@@ -20,6 +20,12 @@ class TestController {
         const test = await testService.correctTest(contentId, content);
         res.json(test);
     }
+
+    async setTestResults(req: Request, res: Response, next: NextFunction) {
+        const {userId, testId, result, protocol, date} = req.body;
+        const test = await testService.setTestResults(userId, testId, result, protocol, date);
+        res.json(test);
+    }
 }
 
 module.exports = new TestController();

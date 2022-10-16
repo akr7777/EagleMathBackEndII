@@ -1,6 +1,8 @@
 import {OneTestType} from "../models/test-model";
+import {TestResultModelType} from "../models/test-result-model";
 
 const testModel = require('../models/test-model');
+const testResultModel = require("../models/test-result-model");
 const resultCodes = require('../utils/resultCodes');
 
 class TestService {
@@ -41,6 +43,22 @@ class TestService {
             }
         } else
             return {resultCode: resultCodes.Error};
+    }
+
+    async setTestResults(userId: string, testId: string, result: number, protocol: Array<TestResultModelType>, date: string) {
+        try {
+            await testResultModel.create({
+                userId: userId,
+                testId: testId,
+                result: result,
+                protocol: protocol,
+                date: date,
+            });
+            return {resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('test-service / setTestResults / error = ', e);
+            return {resultCode: resultCodes.Error};
+        }
     }
 
 }
