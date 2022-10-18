@@ -270,6 +270,23 @@ class ContentService {
         return { resultCode: resultCodes.Error};
     }
 
+    async moveParagraph(contentId: string, elementIndex: number, direction: "up"|"down") {
+        try {
+            const fullContent = await contentModel.findOne({contentId: contentId});
+            const content = fullContent.content;
+            if (direction === "up" && elementIndex > 0)
+                [content[elementIndex - 1], content[elementIndex]] = [content[elementIndex], content[elementIndex - 1]];
+            if (direction === "down" && elementIndex < content.length)
+                [content[elementIndex + 1], content[elementIndex]] = [content[elementIndex], content[elementIndex + 1]];
+            const result = await fullContent.save();
+            return {content: result.content, resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('content-service / addMaterial / error=', e);
+            return { resultCode: resultCodes.Error};
+        }
+        return { resultCode: resultCodes.Error};
+    }
+
 }
 
 module.exports = new ContentService();

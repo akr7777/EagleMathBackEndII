@@ -116,6 +116,12 @@ class ContentController {
         res.json(result);
     }
 
+    async moveParagraph(req: Request, res: Response, next: NextFunction) {
+        const {contentId, elementIndex, direction} = req.body;
+        const result = await contentService.moveParagraph(contentId, elementIndex, direction);
+        res.json(result);
+    }
+
 }
 
 module.exports = new ContentController();

@@ -37,5 +37,7 @@ router.post('/addTask', contentController.addTask);
 router.post('/addCategory', contentController.addCategory);
 router.post('/deleteCategory', contentController.deleteCategory);
 
+router.post('/moveParagraph', contentController.moveParagraph);
+
 
 module.exports = router;
