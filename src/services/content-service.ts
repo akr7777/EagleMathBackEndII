@@ -132,6 +132,7 @@ class ContentService {
         const file = process.env.INIT_CWD + "" + process.env.PATH_TO_CONTENT + fileName;
         if (fs.existsSync(file))
             return file;
+        else return false;
     }
 
     async renameContent(contentId: string, newName: string) {

@@ -56,7 +56,10 @@ class ContentController {
             file = req.files.file;
         if (file) {
             const result = await contentService.setContentImage(file, fileName);
-            res.json(result);
+            if (result)
+                res.json(result);
+            else
+                res.json({resultCode: resultCodes.Error});
         } else {
             res.json({resultCode: resultCodes.Error});
         }
@@ -65,7 +68,10 @@ class ContentController {
     async getContentImage(req: Request, res: Response, next: NextFunction) {
         const {name} = req.query;
         const file = await contentService.getContentImageFile(name);
-        res.sendFile(file);
+        if (file)
+            res.sendFile(file);
+        else
+            res.json({resultCode: resultCodes.Error})
     }
 
     async renameContent(req: Request, res: Response, next: NextFunction) {
