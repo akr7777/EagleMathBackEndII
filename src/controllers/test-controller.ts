@@ -26,6 +26,17 @@ class TestController {
         const test = await testService.setTestResults(userId, testId, result, protocol, date);
         res.json(test);
     }
+
+    async getAllTestsContentIds(req: Request, res: Response, next: NextFunction) {
+        const test = await testService.getAllTestsContentIds();
+        res.json(test);
+    }
+
+    async addNewTestToDataBase(req: Request, res: Response, next: NextFunction) {
+        const {contentId, content} = req.body;
+        const test = await testService.addNewTestToDataBase(contentId, content);
+        res.json(test);
+    }
 }
 
 module.exports = new TestController();

@@ -9,5 +9,8 @@ router.post('/correctTest', testController.correctTest);
 
 router.post('/setTestResults', testController.setTestResults);
 
+router.get('/getAllTestsContentIds', testController.getAllTestsContentIds);
+router.post('/addNewTestToDataBase', testController.addNewTestToDataBase);
+
 
 module.exports = router;

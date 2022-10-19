@@ -1,4 +1,4 @@
-import {OneTestType} from "../models/test-model";
+import {OneTestType, TestModelType} from "../models/test-model";
 import {TestResultModelType} from "../models/test-result-model";
 
 const testModel = require('../models/test-model');
@@ -58,6 +58,34 @@ class TestService {
                     protocol: protocol,
                     date: date,
                 });
+            return {resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('test-service / setTestResults / error = ', e);
+            return {resultCode: resultCodes.Error};
+        }
+    }
+
+    async getAllTestsContentIds() {
+        try {
+            const allTestContentIds = await testModel.find({});
+            if (allTestContentIds) {
+                const result: Array<string> = allTestContentIds.map((test:TestModelType) => test.contentId);
+                return {allTestContentIds: result, resultCode: resultCodes.Success};
+            }
+            return {resultCode: resultCodes.Error};
+
+        } catch (e) {
+            console.log('test-service / setTestResults / error = ', e);
+            return {resultCode: resultCodes.Error};
+        }
+    }
+
+    async addNewTestToDataBase(contentId: string, content: Array<OneTestType>) {
+        try {
+            await testModel.create({
+                contentId: contentId,
+                content: content
+            });
             return {resultCode: resultCodes.Success};
         } catch (e) {
             console.log('test-service / setTestResults / error = ', e);
