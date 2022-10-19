@@ -10,20 +10,20 @@ class TestController {
     }
 
     async addTest(req: Request, res: Response, next: NextFunction) {
-        const {contentId, content} = req.body;
-        const test = await testService.addTest(contentId, content);
+        const {title, contentId, content} = req.body;
+        const test = await testService.addTest(title, contentId, content);
         res.json(test);
     }
 
     async correctTest(req: Request, res: Response, next: NextFunction) {
-        const {contentId, content} = req.body;
-        const test = await testService.correctTest(contentId, content);
+        const {title, contentId, content} = req.body;
+        const test = await testService.correctTest(title, contentId, content);
         res.json(test);
     }
 
     async setTestResults(req: Request, res: Response, next: NextFunction) {
-        const {userId, testId, result, protocol, date} = req.body;
-        const test = await testService.setTestResults(userId, testId, result, protocol, date);
+        const {userId, testId, title, result, protocol, date} = req.body;
+        const test = await testService.setTestResults(userId, testId, title, result, protocol, date);
         res.json(test);
     }
 
@@ -33,8 +33,8 @@ class TestController {
     }
 
     async addNewTestToDataBase(req: Request, res: Response, next: NextFunction) {
-        const {contentId, content} = req.body;
-        const test = await testService.addNewTestToDataBase(contentId, content);
+        const {title, contentId, content} = req.body;
+        const test = await testService.addNewTestToDataBase(title, contentId, content);
         res.json(test);
     }
 }

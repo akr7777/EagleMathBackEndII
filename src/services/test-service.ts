@@ -14,6 +14,7 @@ class TestService {
             if (test) {
                 //console.log('TestService/getTest/returning test=', test);
                 return {
+                    title: test.title,
                     testId: test._id,
                     contentId: test.contentId,
                     content: test.content,
@@ -28,14 +29,15 @@ class TestService {
         }
     }
 
-    async addTest(contentId: string, content: Array<OneTestType>) {
-        const result = await testModel.create({contentId, content});
+    async addTest(title: string, contentId: string, content: Array<OneTestType>) {
+        const result = await testModel.create({title, contentId, content});
         return {result, resultCode: resultCodes.Success};
     }
 
-    async correctTest(contentId: string, content: Array<OneTestType>) {
+    async correctTest(title: string, contentId: string, content: Array<OneTestType>) {
         const test = await testModel.findOne({contentId: contentId});
         if (test) {
+            test.title = title;
             test.content = [...content];
             await test.save();
             return {
@@ -48,12 +50,13 @@ class TestService {
             return {resultCode: resultCodes.Error};
     }
 
-    async setTestResults(userId: string, testId: string, result: number, protocol: Array<TestResultModelType>, date: string) {
+    async setTestResults(title: string, userId: string, testId: string, result: number, protocol: Array<TestResultModelType>, date: string) {
         try {
             if (userId && testId && protocol && date)
                 await testResultModel.create({
                     userId: userId,
                     testId: testId,
+                    title: title,
                     result: result,
                     protocol: protocol,
                     date: date,
@@ -80,9 +83,10 @@ class TestService {
         }
     }
 
-    async addNewTestToDataBase(contentId: string, content: Array<OneTestType>) {
+    async addNewTestToDataBase(title: string, contentId: string, content: Array<OneTestType>) {
         try {
             await testModel.create({
+                title: title,
                 contentId: contentId,
                 content: content
             });

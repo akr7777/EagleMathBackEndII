@@ -1,6 +1,7 @@
 import {Schema, model} from 'mongoose';
 
 export type TestModelType = {
+    title: string,
     contentId: string,
     content: Array<OneTestType>
 }
@@ -12,7 +13,8 @@ export type OneTestType = {
 }
 
 const TestSchema = new Schema({
-    contentId: {type: String, required: true, default: '0'},
+    title: {type: String, required: true, default: ''},
+    contentId: {type: String, required: true, default: ''},
     content: {type: Array, required: true, default: []}
 });
 
