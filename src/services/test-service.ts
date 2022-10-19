@@ -97,6 +97,20 @@ class TestService {
         }
     }
 
+    async editTestInDataBase(testId: string, title: string, contentId: string, content: Array<OneTestType>) {
+        try {
+            const test = await testModel.findOne({_id: testId});
+            test.title = title;
+            test.contentId = contentId;
+            test.content = content;
+            const result = await test.save();
+            return {test: result, resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('test-service / setTestResults / error = ', e);
+            return {resultCode: resultCodes.Error};
+        }
+    }
+
 }
 
 module.exports = new TestService();

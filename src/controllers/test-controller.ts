@@ -37,6 +37,12 @@ class TestController {
         const test = await testService.addNewTestToDataBase(title, contentId, content);
         res.json(test);
     }
+
+    async editTestInDataBase(req: Request, res: Response, next: NextFunction) {
+        const {testId, title, contentId, content} = req.body;
+        const test = await testService.editTestInDataBase(testId, title, contentId, content);
+        res.json(test);
+    }
 }
 
 module.exports = new TestController();
