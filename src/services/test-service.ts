@@ -50,7 +50,7 @@ class TestService {
             return {resultCode: resultCodes.Error};
     }
 
-    async setTestResults(title: string, userId: string, testId: string, result: number, protocol: Array<TestResultModelType>, date: string) {
+    async setTestResults(userId: string, testId: string, title: string, result: number, protocol: Array<TestResultModelType>, date: string) {
         try {
             if (userId && testId && protocol && date)
                 await testResultModel.create({
@@ -105,6 +105,19 @@ class TestService {
             test.content = content;
             const result = await test.save();
             return {test: result, resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('test-service / setTestResults / error = ', e);
+            return {resultCode: resultCodes.Error};
+        }
+    }
+
+    async getTestResultsByUserId(userId: string) {
+        try {
+            const testResults = await testResultModel.find({userId: userId});
+            if (testResults)
+                return {testResults: testResults, resultCode: resultCodes.Success};
+            else
+                return {testResults: [], resultCode: resultCodes.Success};
         } catch (e) {
             console.log('test-service / setTestResults / error = ', e);
             return {resultCode: resultCodes.Error};

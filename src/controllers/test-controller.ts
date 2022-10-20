@@ -43,6 +43,12 @@ class TestController {
         const test = await testService.editTestInDataBase(testId, title, contentId, content);
         res.json(test);
     }
+
+    async getTestResultsByUserId(req: Request, res: Response, next: NextFunction) {
+        const {userId} = req.body;
+        const test = await testService.getTestResultsByUserId(userId);
+        res.json(test);
+    }
 }
 
 module.exports = new TestController();

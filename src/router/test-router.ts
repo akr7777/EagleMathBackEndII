@@ -11,6 +11,7 @@ router.post('/setTestResults', testController.setTestResults);
 
 router.get('/getAllTestsContentIds', testController.getAllTestsContentIds);
 router.post('/addNewTestToDataBase', testController.addNewTestToDataBase);
-router.post('/editTestInDataBase', testController.editTestInDataBase)
+router.post('/editTestInDataBase', testController.editTestInDataBase);
+router.post('/getTestResultsByUserId', testController.getTestResultsByUserId);
 
 module.exports = router;
