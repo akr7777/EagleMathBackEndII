@@ -15,6 +15,7 @@ const routerContent = require('./router/content-router');
 const routerUsers = require('./router/users-router');
 const routerNotes = require('./router/notes-router');
 const routerTest = require('./router/test-router');
+const routerObjective = require('./router/objective-router');
 
 const errorMiddleware = require('./middleware/error-middleware');
 
@@ -44,6 +45,7 @@ app.use('/content', routerContent);
 app.use('/users', routerUsers);
 app.use('/notes', routerNotes);
 app.use('/test', routerTest);
+app.use('/objectives', routerObjective);
 
 const start = async () => {
     try {
