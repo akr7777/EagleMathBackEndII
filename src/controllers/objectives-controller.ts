@@ -16,7 +16,11 @@ class objectiveController {
         const test = await objectivesService.setObjectiveResult(req.body);
         res.json(test);
     }
-
+    async getObjectiveResultsByUserId(req: Request, res: Response, next: NextFunction) {
+        const {userId} = req.body;
+        const test = await objectivesService.getObjectiveResultsByUserId(userId);
+        res.json(test);
+    }
 }
 
 module.exports = new objectiveController();

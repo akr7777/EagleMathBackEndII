@@ -57,6 +57,16 @@ class ObjectivesService {
             return { resultCode: resultCodes.Error }
         }
     }
+
+    async getObjectiveResultsByUserId (userId: string) {
+        try {
+            const objectiveResults = await objectiveResult.find({userId: userId});
+            return { objectiveResults: objectiveResults, resultCode: resultCodes.Success }
+        } catch (e) {
+            console.log('objective-service / setObjectiveResult / error =', e);
+            return { resultCode: resultCodes.Error }
+        }
+    }
 }
 
 module.exports = new ObjectivesService();

@@ -6,5 +6,6 @@ const router = Router();
 router.post('/getObjectiveByContentId', objectiveController.getObjectiveByContentId);
 router.post('/addObjective', objectiveController.addObjective);
 router.post('/setObjectiveResult', objectiveController.setObjectiveResult);
+router.post('/getObjectiveResultsByUserId', objectiveController.getObjectiveResultsByUserId);
 
 module.exports = router;
