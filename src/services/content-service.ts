@@ -2,9 +2,8 @@ import {MaterialsType} from "../models/material-model";
 import {TaskType} from "../models/task-model";
 import {ContentType} from "../models/content-model";
 import fs from "fs";
-import {v4} from "uuid";
-const ObjectId = require('mongodb').ObjectId;
-
+import {ContentStudiedModelType} from "../models/content-studied-model";
+const contentStudiedModel = require('../models/content-studied-model');
 const categoryModel = require('../models/categories-model');
 const materialModel = require('../models/material-model');
 const taskModel = require('../models/task-model');
@@ -251,7 +250,7 @@ class ContentService {
             const categories = await categoryModel.find();
             return {categories, resultCode: resultCodes.Success};
         } catch (e) {
-            console.log('content-service / addMaterial / error=', e);
+            console.log('content-service / addCategory / error=', e);
             return { resultCode: resultCodes.Error};
         }
         return { resultCode: resultCodes.Error};
@@ -265,10 +264,10 @@ class ContentService {
             const categories = await categoryModel.find();
             return {categories, resultCode: resultCodes.Success};
         } catch (e) {
-            console.log('content-service / addMaterial / error=', e);
+            console.log('content-service / deleteCategory / error=', e);
             return { resultCode: resultCodes.Error};
         }
-        return { resultCode: resultCodes.Error};
+        //return { resultCode: resultCodes.Error};
     }
 
     async moveParagraph(contentId: string, elementIndex: number, direction: "up"|"down") {
@@ -282,11 +281,58 @@ class ContentService {
             const result = await fullContent.save();
             return {content: result.content, resultCode: resultCodes.Success};
         } catch (e) {
-            console.log('content-service / addMaterial / error=', e);
+            console.log('content-service / moveParagraph / error=', e);
             return { resultCode: resultCodes.Error};
         }
-        return { resultCode: resultCodes.Error};
+        //return { resultCode: resultCodes.Error};
     }
+
+    async studiedMaterials(userId: string) {
+        try {
+            const contentStudied = await contentStudiedModel.find({userId: userId, isStudied: true});
+            if (contentStudied) {
+                return {studiedMaterials: contentStudied.map((c:ContentStudiedModelType) => c.contentId), resultCode: resultCodes.Success};
+            }
+            else
+                return {studiedMaterials: [], resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('content-service / isMaterialStudied / error=', e);
+            return { studiedMaterials: [], resultCode: resultCodes.Error };
+        }
+    }
+
+    async setMaterialStudied(userId: string, contentId: string, value: boolean) {
+        try {
+            const contentStudied = await contentStudiedModel.findOne({userId: userId, contentId: contentId});
+            if (contentStudied) {
+                contentStudied.isStudied = value;
+                await contentStudied.save();
+                const result = await this.studiedMaterials(userId);
+                return result;
+            }
+            else {
+                await contentStudiedModel.create({userId: userId, contentId: contentId, isStudied: value});
+                const result = await this.studiedMaterials(userId);
+                return result;
+            }
+        } catch (e) {
+            console.log('content-service / setMaterialStudied / error=', e);
+            return { resultCode: resultCodes.Error};
+        }
+    }
+
+    /*async setMaterialUnStudied(userId: string, contentId: string) {
+        try {
+            const contentStudied = await contentStudiedModel.findOne({userId: userId, contentId: contentId});
+            if (contentStudied)
+                contentStudied.isStudied = false;
+                await contentStudied.save();
+                return {isStudied: contentStudied.isStudied, resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('content-service / setMaterialUnStudied / error=', e);
+            return { resultCode: resultCodes.Error};
+        }
+    }*/
 
 }
 

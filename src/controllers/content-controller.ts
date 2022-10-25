@@ -128,6 +128,18 @@ class ContentController {
         res.json(result);
     }
 
+    async studiedMaterials(req: Request, res: Response, next: NextFunction) {
+        const {userId} = req.body;
+        const result = await contentService.studiedMaterials(userId);
+        res.json(result);
+    }
+    async setMaterialStudied(req: Request, res: Response, next: NextFunction) {
+        const {userId, contentId, value} = req.body;
+        const result = await contentService.setMaterialStudied(userId, contentId, value);
+        console.log('content-controller / isMaterialStudied / result=', result)
+        res.json(result);
+    }
+
 }
 
 module.exports = new ContentController();

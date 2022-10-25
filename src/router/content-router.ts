@@ -12,8 +12,8 @@ router.get('/getAllTasks', contentController.getAllTasks);
 
 router.get('/getContent/:contentId', contentController.getContent);
 router.post('/setContent', contentController.setContent);
-router.post('/setContentImage', contentController.setContentImage)
-router.get('/getContentImage', contentController.getContentImage)
+router.post('/setContentImage', contentController.setContentImage);
+router.get('/getContentImage', contentController.getContentImage);
 
 router.post('/getFavorites', contentController.getFavoritesContent);
 router.post('/addContentToFavorites', contentController.addContentToFavorites);
@@ -31,7 +31,6 @@ router.post('/changeParentId', contentController.changeParentId);
 
 router.post('/deleteContent', contentController.deleteContent);
 
-//router.post('/getContentType', contentController.getContentType);
 router.post('/addMaterial', contentController.addMaterial);
 router.post('/addTask', contentController.addTask);
 router.post('/addCategory', contentController.addCategory);
@@ -39,5 +38,7 @@ router.post('/deleteCategory', contentController.deleteCategory);
 
 router.post('/moveParagraph', contentController.moveParagraph);
 
+router.post('/studiedMaterials', contentController.studiedMaterials);
+router.post('/setMaterialStudied', contentController.setMaterialStudied);
 
 module.exports = router;
