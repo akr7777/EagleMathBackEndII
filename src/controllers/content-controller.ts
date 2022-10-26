@@ -133,10 +133,16 @@ class ContentController {
         const result = await contentService.studiedMaterials(userId);
         res.json(result);
     }
+    async getFullStudiedContent(req: Request, res: Response, next: NextFunction) {
+        const {userId} = req.body;
+        const result = await contentService.getFullStudiedContent(userId);
+        console.log('content-controller / getFullStudiedContent / userId, result=', userId, result)
+        res.json(result);
+    }
     async setMaterialStudied(req: Request, res: Response, next: NextFunction) {
         const {userId, contentId, value} = req.body;
         const result = await contentService.setMaterialStudied(userId, contentId, value);
-        console.log('content-controller / isMaterialStudied / result=', result)
+        //console.log('content-controller / isMaterialStudied / result=', result)
         res.json(result);
     }
 

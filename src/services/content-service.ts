@@ -3,6 +3,7 @@ import {TaskType} from "../models/task-model";
 import {ContentType} from "../models/content-model";
 import fs from "fs";
 import {ContentStudiedModelType} from "../models/content-studied-model";
+
 const contentStudiedModel = require('../models/content-studied-model');
 const categoryModel = require('../models/categories-model');
 const materialModel = require('../models/material-model');
@@ -12,6 +13,7 @@ const favoriteContentModel = require('../models/favorite-content-model');
 const contentModel = require('../models/content-model');
 const resultCodes = require('../utils/resultCodes');
 
+
 class ContentService {
     async getAllCategories() {
         const response = await categoryModel.find();
@@ -19,13 +21,13 @@ class ContentService {
     }
 
     async getAllMaterials() {
-        const result:Array<{id: string, label: string, parentId: string}> = [];
+        const result: Array<{ id: string, label: string, parentId: string }> = [];
 
         //result.forEach(d => d);
 
-        const materials:Array<MaterialsType> = await materialModel.find();
+        const materials: Array<MaterialsType> = await materialModel.find();
         if (materials) {
-            materials.forEach( (d:MaterialsType) => {
+            materials.forEach((d: MaterialsType) => {
                 result.push({
                     id: d._id,
                     label: d.label,
@@ -38,11 +40,11 @@ class ContentService {
     }
 
     async getAllTasks() {
-        const result:Array<{id: string, label: string, parentId: string}> = [];
+        const result: Array<{ id: string, label: string, parentId: string }> = [];
 
-        const tasks:Array<TaskType> = await taskModel.find();
+        const tasks: Array<TaskType> = await taskModel.find();
         if (tasks) {
-            tasks.forEach( (d:TaskType) => {
+            tasks.forEach((d: TaskType) => {
                 result.push({
                     id: d._id,
                     label: d.label,
@@ -61,35 +63,37 @@ class ContentService {
         else
             return []
     }
+
     async addContentToFavorites(userId: string, contentId: string) {
         const f = await favoriteContentModel.findOne({userId: userId});
         f.favorites.push(contentId);
         f.save();
         return f.favorites;
     }
+
     async deleteContentFromFavorites(userId: string, contentId: string) {
         const f = await favoriteContentModel.findOne({userId: userId});
-        f.favorites = f.favorites.filter( (cid:string) => cid !== contentId);
+        f.favorites = f.favorites.filter((cid: string) => cid !== contentId);
         f.save();
         return f.favorites;
     }
 
     async getContent(contentId: string) {
-        const data:ContentType = await contentModel.findOne({contentId: contentId});
+        const data: ContentType = await contentModel.findOne({contentId: contentId});
         if (data) {
             return {
                 content: data.content,
                 resultCode: resultCodes.Success,
             }
         } else {
-                return {
-                    content: [],
-                    resultCode: resultCodes.Error
-                }
+            return {
+                content: [],
+                resultCode: resultCodes.Error
             }
+        }
     }
 
-    async setContent (newContent: {content: Array<ContentType>, contentId: string}) {
+    async setContent(newContent: { content: Array<ContentType>, contentId: string }) {
         const data = await contentModel.findOne({contentId: newContent.contentId});
         if (data) {
             data.contentId = newContent.contentId;
@@ -217,9 +221,9 @@ class ContentService {
             return {resultCode: resultCodes.Success};
         } catch (e) {
             console.log('content-service / addMaterial / error=', e);
-            return { resultCode: resultCodes.Error};
+            return {resultCode: resultCodes.Error};
         }
-        return { resultCode: resultCodes.Error};
+        return {resultCode: resultCodes.Error};
     }
 
     async addTask(parentContentId: string) {
@@ -236,9 +240,9 @@ class ContentService {
             return {resultCode: resultCodes.Success};
         } catch (e) {
             console.log('content-service / addTask / error=', e);
-            return { resultCode: resultCodes.Error};
+            return {resultCode: resultCodes.Error};
         }
-        return { resultCode: resultCodes.Error};
+        return {resultCode: resultCodes.Error};
     }
 
     async addCategory(parentContentId: string) {
@@ -251,9 +255,9 @@ class ContentService {
             return {categories, resultCode: resultCodes.Success};
         } catch (e) {
             console.log('content-service / addCategory / error=', e);
-            return { resultCode: resultCodes.Error};
+            return {resultCode: resultCodes.Error};
         }
-        return { resultCode: resultCodes.Error};
+        return {resultCode: resultCodes.Error};
     }
 
     async deleteCategory(contentId: string) {
@@ -265,12 +269,12 @@ class ContentService {
             return {categories, resultCode: resultCodes.Success};
         } catch (e) {
             console.log('content-service / deleteCategory / error=', e);
-            return { resultCode: resultCodes.Error};
+            return {resultCode: resultCodes.Error};
         }
         //return { resultCode: resultCodes.Error};
     }
 
-    async moveParagraph(contentId: string, elementIndex: number, direction: "up"|"down") {
+    async moveParagraph(contentId: string, elementIndex: number, direction: "up" | "down") {
         try {
             const fullContent = await contentModel.findOne({contentId: contentId});
             const content = fullContent.content;
@@ -282,7 +286,7 @@ class ContentService {
             return {content: result.content, resultCode: resultCodes.Success};
         } catch (e) {
             console.log('content-service / moveParagraph / error=', e);
-            return { resultCode: resultCodes.Error};
+            return {resultCode: resultCodes.Error};
         }
         //return { resultCode: resultCodes.Error};
     }
@@ -291,13 +295,35 @@ class ContentService {
         try {
             const contentStudied = await contentStudiedModel.find({userId: userId, isStudied: true});
             if (contentStudied) {
-                return {studiedMaterials: contentStudied.map((c:ContentStudiedModelType) => c.contentId), resultCode: resultCodes.Success};
-            }
-            else
+                return {
+                    studiedMaterials: contentStudied.map((c: ContentStudiedModelType) => c.contentId),
+                    resultCode: resultCodes.Success
+                };
+            } else
                 return {studiedMaterials: [], resultCode: resultCodes.Success};
         } catch (e) {
             console.log('content-service / isMaterialStudied / error=', e);
-            return { studiedMaterials: [], resultCode: resultCodes.Error };
+            return {studiedMaterials: [], resultCode: resultCodes.Error};
+        }
+    }
+
+    async getFullStudiedContent(userId: string) {
+        try {
+            let result:Array<MaterialsType | TaskType> = [];
+            const contentStudied = await contentStudiedModel.find({userId: userId, isStudied: true});
+            const materials:Array<MaterialsType> = await materialModel.find();
+            const tasks:Array<TaskType> = await taskModel.find();
+            if (contentStudied) {
+                contentStudied.forEach( (c:ContentStudiedModelType) => {
+                    if (tasks) result = [...result, ...tasks.filter(el => el._id.toString() === c.contentId)];
+                    if (materials) result = [...result, ...materials.filter(el => el._id.toString() === c.contentId)];
+                });
+                return {studiedMaterialContent: result.map(el => { return {contentId: el._id.toString(), content: el.label}}), resultCode: resultCodes.Success};
+            } else
+                return {studiedMaterialContent: [], resultCode: resultCodes.Success};
+        } catch (e) {
+            console.log('content-service / isMaterialStudied / error=', e);
+            return {studiedMaterialContent: [], resultCode: resultCodes.Error};
         }
     }
 
@@ -309,15 +335,14 @@ class ContentService {
                 await contentStudied.save();
                 const result = await this.studiedMaterials(userId);
                 return result;
-            }
-            else {
+            } else {
                 await contentStudiedModel.create({userId: userId, contentId: contentId, isStudied: value});
                 const result = await this.studiedMaterials(userId);
                 return result;
             }
         } catch (e) {
             console.log('content-service / setMaterialStudied / error=', e);
-            return { resultCode: resultCodes.Error};
+            return {resultCode: resultCodes.Error};
         }
     }
 

@@ -40,5 +40,6 @@ router.post('/moveParagraph', contentController.moveParagraph);
 
 router.post('/studiedMaterials', contentController.studiedMaterials);
 router.post('/setMaterialStudied', contentController.setMaterialStudied);
+router.post('/getFullStudiedContent', contentController.getFullStudiedContent);
 
 module.exports = router;
