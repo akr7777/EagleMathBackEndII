@@ -306,16 +306,20 @@ class ContentService {
 
     async getFullStudiedContent(userId: string) {
         try {
-            let result:Array<MaterialsType | TaskType> = [];
+            let result: Array<MaterialsType | TaskType> = [];
             const contentStudied = await contentStudiedModel.find({userId: userId, isStudied: true});
-            const materials:Array<MaterialsType> = await materialModel.find();
-            const tasks:Array<TaskType> = await taskModel.find();
+            const materials: Array<MaterialsType> = await materialModel.find();
+            const tasks: Array<TaskType> = await taskModel.find();
             if (contentStudied) {
-                contentStudied.forEach( (c:ContentStudiedModelType) => {
+                contentStudied.forEach((c: ContentStudiedModelType) => {
                     if (tasks) result = [...result, ...tasks.filter(el => el._id.toString() === c.contentId)];
                     if (materials) result = [...result, ...materials.filter(el => el._id.toString() === c.contentId)];
                 });
-                return {studiedMaterialContent: result.map(el => { return {contentId: el._id.toString(), content: el.label}}), resultCode: resultCodes.Success};
+                return {
+                    studiedMaterialContent: result.map(el => {
+                        return {contentId: el._id.toString(), content: el.label}
+                    }), resultCode: resultCodes.Success
+                };
             } else
                 return {studiedMaterialContent: [], resultCode: resultCodes.Success};
         } catch (e) {
@@ -336,6 +340,22 @@ class ContentService {
                 await contentStudiedModel.create({userId: userId, contentId: contentId, isStudied: value});
                 const result = await this.studiedMaterials(userId);
                 return result;
+            }
+        } catch (e) {
+            console.log('content-service / setMaterialStudied / error=', e);
+            return {resultCode: resultCodes.Error};
+        }
+    }
+
+    async getContentTitleById(contentId: string) {
+        try {
+            const task = await taskModel.findById(contentId);
+            if (task)
+                return {contentTitle: task.label, resultCode: resultCodes.Success}
+            else {
+                const material = await materialModel.findById(contentId);
+                if (material)
+                    return {contentTitle: material.label, resultCode: resultCodes.Success}
             }
         } catch (e) {
             console.log('content-service / setMaterialStudied / error=', e);

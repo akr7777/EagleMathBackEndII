@@ -42,4 +42,6 @@ router.post('/studiedMaterials', contentController.studiedMaterials);
 router.post('/setMaterialStudied', contentController.setMaterialStudied);
 router.post('/getFullStudiedContent', contentController.getFullStudiedContent);
 
+router.post('/getContentTitleById', contentController.getContentTitleById);
+
 module.exports = router;

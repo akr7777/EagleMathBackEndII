@@ -5,13 +5,13 @@ export type ContentType = {
     type: "Title" | "Text" | "Image",
     content: string,
 }
-export type ContentLineType = {
+/*export type ContentLineType = {
     //_id: string,
     contentId: string,
     //index: number,
     //type: "Title" | "Text" | "Image",
     content: Array<ContentType>,
-}
+}*/
 
 const ContentSchema = new Schema({
     contentId: {type: String, required: true},

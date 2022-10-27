@@ -146,6 +146,12 @@ class ContentController {
         res.json(result);
     }
 
+    async getContentTitleById(req: Request, res: Response, next: NextFunction) {
+        const {contentId} = req.body;
+        const result = await contentService.getContentTitleById(contentId);
+        res.json(result);
+    }
+
 }
 
 module.exports = new ContentController();
