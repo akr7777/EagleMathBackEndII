@@ -64,6 +64,7 @@ class DescriptionContectController {
     }
 
     async setContacts(req: Request, res: Response, next: NextFunction) {
+        console.log('descr-contacts-controller / setContacts / req.body=', req.body)
         const contacts = await dcService.setContacts(req.body);
         if (contacts) {
             res.json({ ...contacts, resultCode: resultCodes.Success});

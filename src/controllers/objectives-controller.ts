@@ -26,7 +26,7 @@ class objectiveController {
 
     async getObjectiveImage(req: Request, res: Response, next: NextFunction) {
         const {name} = req.query;
-        console.log('objective controller / getObjectiveImage / name = ', name)
+        //console.log('objective controller / getObjectiveImage / name = ', name)
         const file = await objectivesService.getObjectiveImage(name);
         if (file)
             res.sendFile(file);

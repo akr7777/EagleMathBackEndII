@@ -42,6 +42,7 @@ class DescriptionContactService {
     async setContacts(newContactInfo:NewContactInfoType) {
         try {
             //    description:string, email:string, phone:string, skype:string, telegram:string, title:string, whatsapp:string
+            console.log('descr-cont service / setContacts/newContactInfo=', newContactInfo)
             const newContacts = await dcModel.findOne();
             if (newContacts) {
                 newContacts.contactsTitle = newContactInfo.title || "";
