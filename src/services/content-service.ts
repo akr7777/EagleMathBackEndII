@@ -118,10 +118,7 @@ class ContentService {
     }
 
     async setContentImage(file: any, fileName: string) {
-        //const data = await contentModel.findOne({contentId: contentId});
         const path = process.env.INIT_CWD + "" + process.env.PATH_TO_CONTENT + fileName;
-        console.log('content-servoce / setContentImage / path=', path);
-
         try {
             await file.mv(path);
             return resultCodes.Success;

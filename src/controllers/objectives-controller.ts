@@ -9,7 +9,9 @@ class objectiveController {
         res.json(test);
     }
     async addObjective(req: Request, res: Response, next: NextFunction) {
-        const test = await objectivesService.addObjective(req.body);
+        let file;
+        if (req.files && req.files.picture) file = req.files.picture;
+        const test = await objectivesService.addObjective({data: req.body, file: file});
         res.json(test);
     }
     async setObjectiveResult(req: Request, res: Response, next: NextFunction) {
@@ -21,6 +23,17 @@ class objectiveController {
         const test = await objectivesService.getObjectiveResultsByUserId(userId);
         res.json(test);
     }
+
+    async getObjectiveImage(req: Request, res: Response, next: NextFunction) {
+        const {name} = req.query;
+        console.log('objective controller / getObjectiveImage / name = ', name)
+        const file = await objectivesService.getObjectiveImage(name);
+        if (file)
+            res.sendFile(file);
+        else
+            res.json({resultCode: resultCodes.Error})
+    }
+
 }
 
 module.exports = new objectiveController();

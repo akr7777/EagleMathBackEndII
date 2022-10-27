@@ -136,7 +136,7 @@ class ContentController {
     async getFullStudiedContent(req: Request, res: Response, next: NextFunction) {
         const {userId} = req.body;
         const result = await contentService.getFullStudiedContent(userId);
-        console.log('content-controller / getFullStudiedContent / userId, result=', userId, result)
+        //console.log('content-controller / getFullStudiedContent / userId, result=', userId, result)
         res.json(result);
     }
     async setMaterialStudied(req: Request, res: Response, next: NextFunction) {

@@ -7,5 +7,6 @@ router.post('/getObjectiveByContentId', objectiveController.getObjectiveByConten
 router.post('/addObjective', objectiveController.addObjective);
 router.post('/setObjectiveResult', objectiveController.setObjectiveResult);
 router.post('/getObjectiveResultsByUserId', objectiveController.getObjectiveResultsByUserId);
+router.get('/getObjectiveImage', objectiveController.getObjectiveImage);
 
 module.exports = router;

@@ -13,7 +13,7 @@ const ObjectiveSchema = new Schema({
     contentId: {type: String, required: true, default: ''},
     content: {type: String, required: true, default: ''},
     answer: {type: String, required: true, default: ''},
-    picture: {type: String, required: true, default: ''}
+    picture: {type: String, required: false, default: ''}
 });
 
 module.exports = model('Objective', ObjectiveSchema);
